@@ -1,4 +1,7 @@
-// PINS
+#ifndef ENV_H
+#define ENV_H
+
+// -------------------- PINS
 #define BOARD_LED (15)
 #define BATTERY_PIN (34)
 #define MOTOR_LEFT_BACKWARD (14)
@@ -9,7 +12,10 @@
 #define ULTRASONIC_ECHO (26)
 #define INFRARED_LEFT (36)
 #define INFRARED_RIGHT (39)
+#define INFO_LED (43)
 
-// ENVIRONMENTS
+// -------------------- ENVIRONMENTS
 #define WIFI_SSID ("")
 #define WIFI_PASSWORD ("")
+
+#endif  // ENV_H

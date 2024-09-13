@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "env-example": "cpp",
+    "stdexcept": "cpp"
+  },
+  "C_Cpp.clang_format_sortIncludes": true,
+  "editor.tabSize": 2,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true
+}
