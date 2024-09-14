@@ -1,8 +1,7 @@
 #include "createHttpHandlers.h"
 
-#include "../env.h"
-
-Ultrasonic ultrasonic(ULTRASONIC_TRIGGER, ULTRASONIC_ECHO);
+// Import External Variables //
+extern Ultrasonic ultrasonic;
 
 void createHttpHandlers(AsyncWebServer *server) {
   server->on("/healthz", HTTP_GET, [](AsyncWebServerRequest *request) {

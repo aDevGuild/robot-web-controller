@@ -1,14 +1,4 @@
-#include <Arduino.h>
-#include <ESPAsyncWebServer.h>
-#include <Ultrasonic.h>
-#include <WiFi.h>
-
-#include "./env.h"
-#include "./handlers/createHttpHandlers.h"
-
-// Import External Variables // BEGIN //
-extern Ultrasonic ultrasonic;
-// Import External Variables // END //
+#include "main.h"
 
 // Type Definitions // BEGIN //
 enum MessageType { LED, MOVE };
@@ -17,7 +7,9 @@ enum MessageType { LED, MOVE };
 // Variable Definitions // BEGIN //
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
-static uint32_t client_id;
+uint32_t client_id;
+
+Ultrasonic ultrasonic(ULTRASONIC_TRIGGER, ULTRASONIC_ECHO);
 // Variable Definitions // END //
 
 // AsyncWebSocket Received Message Handler // BEGIN //
@@ -93,15 +85,13 @@ void setup() {
   Serial.printf("Server running at IP address ");
   Serial.println(WiFi.localIP());
   // WIFI Setup // END //
+
+  // Tasks Setup // BEGIN //
+  xTaskCreate(taskTelemetry, "taskTelemetry", 256, NULL, 1, NULL);
+  // Tasks Setup // END //
 }
 // Arduino Framework Setup // END //
 
 // Arduino Framework Super Loop // BEGIN //
-uint32_t current_time = millis();
-void loop() {
-  if (current_time - millis() > 500) {
-    ws.text(client_id, String(ultrasonic.read()));
-    current_time = millis();
-  }
-}
+void loop() {}
 // Arduino Framework Super Loop // END //
