@@ -19,7 +19,8 @@ The only behavior that should be given to this task is when nothing more is runn
 ```cpp
 /**
  * @file MyFile.h
- * @brief This file contains the prototypes of the functions that will be used in MyFile.c.
+ * @brief This file contains the prototypes of the functions that will be used
+ * in MyFile.c.
  */
 
 #ifndef MY_FILE_H
