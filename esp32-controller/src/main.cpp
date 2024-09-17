@@ -4,40 +4,21 @@
 enum MessageType { LED, MOVE };
 // Type Definitions // END //
 
+// Constant Definitions // BEGIN //
+const esp_websocket_client_config_t ws_config = {
+    .uri = WEBSOCKET_URI,
+    .port = WEBSOCKET_PORT,
+};
+// Constant Definitions // END //s
+
 // Variable Definitions // BEGIN //
-AsyncWebServer server(80);
-AsyncWebSocket ws("/ws");
-uint32_t client_id;
+esp_websocket_client_handle_t ws_client;
 
 Ultrasonic ultrasonic(ULTRASONIC_TRIGGER, ULTRASONIC_ECHO);
+EngineController engine_controller(MOTOR_LEFT_FORWARD, MOTOR_LEFT_BACKWARD,
+                                   MOTOR_RIGHT_FORWARD, MOTOR_RIGHT_BACKWARD);
+
 // Variable Definitions // END //
-
-// AsyncWebSocket Received Message Handler // BEGIN //
-void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
-             AwsEventType type, void *arg, uint8_t *data, size_t len) {
-  switch (type) {
-    case WS_EVT_CONNECT:
-      client_id = client->id();
-
-      break;
-    case WS_EVT_DATA: {
-      MessageType message_type = (MessageType)((char)data[0] - '0');
-
-      switch (message_type) {
-        case MessageType::LED:
-          digitalWrite(INFO_LED, (char)data[1] - '0');
-          break;
-
-        default:
-          throw std::invalid_argument("Invalid message type");
-      }
-      break;
-    }
-    default:
-      throw std::invalid_argument("Invalid event type");
-  }
-}
-// AsyncWebSocket Received Message Handler // END //
 
 // Arduino Framework Setup // BEGIN //
 void setup() {
@@ -47,10 +28,10 @@ void setup() {
 
   // GPIO Setup // BEGIN //
   pinMode(INFO_LED, OUTPUT);
-  digitalWrite(INFO_LED, 1);
   // GPIO Setup // END //
 
   // WIFI Setup // BEGIN //
+  digitalWrite(INFO_LED, 1);
   Serial.print("Trying to connect to Wifi");
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -68,27 +49,53 @@ void setup() {
 
     if (connection_retries > 30) {
       Serial.println();
-      Serial.print("not yet connected executing ESP.restart();");
+      Serial.print("not yet connected executing ESP.restart()");
       ESP.restart();
     }
   }
   Serial.println();
-
-  ws.onEvent(onEvent);
-  server.addHandler(&ws);
-
-  createHttpHandlers(&server);
-
-  server.begin();
-
-  digitalWrite(INFO_LED, 0);
-  Serial.printf("Server running at IP address ");
+  Serial.printf("Client running at IP address ");
   Serial.println(WiFi.localIP());
+  digitalWrite(INFO_LED, 0);
   // WIFI Setup // END //
+
+  // Websocket Setup // BEGIN //
+  digitalWrite(INFO_LED, 1);
+  Serial.print("Trying to connect to the WebSocket server");
+
+  ws_client = esp_websocket_client_init(&ws_config);
+  esp_websocket_client_start(ws_client);
+
+  esp_websocket_register_events(ws_client, WEBSOCKET_EVENT_ANY, wsEventHandler,
+                                NULL);
+
+  current_timer = millis();
+  connection_retries = 0;
+  while (!esp_websocket_client_is_connected(ws_client)) {
+    if (millis() - current_timer < 500) {
+      continue;
+    }
+
+    Serial.print(".");
+    connection_retries++;
+    current_timer = millis();
+
+    if (connection_retries > 30) {
+      Serial.println();
+      Serial.print("not yet connected executing ESP.restart()");
+      ESP.restart();
+    }
+  }
+  digitalWrite(INFO_LED, 0);
+  // Websocket Setup // END //
 
   // Tasks Setup // BEGIN //
   xTaskCreate(taskTelemetry, "taskTelemetry", 256, NULL, 1, NULL);
   // Tasks Setup // END //
+
+  // Queue Setup // BEGIN //
+  xQueueCreate(10, sizeof(uint32_t));
+  // Queue Setup // END //
 }
 // Arduino Framework Setup // END //
 
