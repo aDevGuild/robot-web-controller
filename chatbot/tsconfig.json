@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    // Ecma Script
+    "target": "ESNext",
+    "lib": ["ESNext", "ES2015"],
+    "module": "ESNext",
+
+    // Strict Type Checking
+    "strict": true,
+
+    // Module Resolution
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "esModuleInterop": true
+  }
+}
