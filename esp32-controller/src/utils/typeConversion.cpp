@@ -23,25 +23,25 @@ unsigned int str_to_uint(const char* str) {
   // Check for various possible errors
   if (errno == ERANGE && value == ULONG_MAX) {
     // Value out of range for an unsigned long
-    printf("Value out of range.\n");
+    // printf("Value out of range.\n");
     return 0;
   }
 
   if (endptr == str) {
     // No digits were found
-    printf("Invalid input: No digits found.\n");
+    // printf("Invalid input: No digits found.\n");
     return 0;
   }
 
   if (*endptr != '\0') {
-    // If there are leftover characters in the string that aren't valid
-    numbers printf("Invalid input: Contains non-numeric characters.\n");
+    // If there are leftover characters in the string that aren't valid numbers
+    // printf("Invalid input: Contains non-numeric characters.\n");
     return 0;
   }
 
   // Check if the value fits in an unsigned int
   if (value > UINT_MAX) {
-    printf("Value out of range for an unsigned int.\n");
+    // printf("Value out of range for an unsigned int.\n");
     return 0;
   }
 

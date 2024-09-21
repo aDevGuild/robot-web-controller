@@ -1,9 +1,5 @@
 #include "main.h"
 
-// Type Definitions // BEGIN //
-enum MessageType { LED, MOVE };
-// Type Definitions // END //
-
 // Constant Definitions // BEGIN //
 const esp_websocket_client_config_t ws_config = {
     .uri = WEBSOCKET_URI,
@@ -12,12 +8,13 @@ const esp_websocket_client_config_t ws_config = {
 // Constant Definitions // END //s
 
 // Variable Definitions // BEGIN //
+QueueHandle_t movementQueue;
+
 esp_websocket_client_handle_t ws_client;
 
 Ultrasonic ultrasonic(ULTRASONIC_TRIGGER, ULTRASONIC_ECHO);
 EngineController engine_controller(MOTOR_LEFT_FORWARD, MOTOR_LEFT_BACKWARD,
                                    MOTOR_RIGHT_FORWARD, MOTOR_RIGHT_BACKWARD);
-
 // Variable Definitions // END //
 
 // Arduino Framework Setup // BEGIN //
@@ -94,7 +91,7 @@ void setup() {
   // Tasks Setup // END //
 
   // Queue Setup // BEGIN //
-  xQueueCreate(10, sizeof(uint32_t));
+  movementQueue = xQueueCreate(10, sizeof(MovementRequest));
   // Queue Setup // END //
 }
 // Arduino Framework Setup // END //
