@@ -17,7 +17,7 @@
 // -------------------- ENVIRONMENTS
 #define WIFI_SSID ("")
 #define WIFI_PASSWORD ("")
-#define WEBSOCKET_URI ("ws://localhost:8080")
-#define WEBSOCKET_PORT (4567)
+#define WEBSOCKET_URI ("ws://localhost")
+#define WEBSOCKET_PORT (8080)
 
 #endif  // ENV_H

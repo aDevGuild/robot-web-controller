@@ -28,7 +28,7 @@ void wsEventHandler(void* event_handler_arg, esp_event_base_t event_base,
       char message_type = data.data_ptr[0];
 
       Serial.print("Message type: ");
-      Serial.print(message_type);
+      Serial.println(message_type);
 
       switch (message_type) {
         case MESSAGE_TYPE_MOVE: {

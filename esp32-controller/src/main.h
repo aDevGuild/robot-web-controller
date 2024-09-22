@@ -19,6 +19,7 @@
 #include "env.h"
 #include "handler/wsEventHandler.h"
 #include "modules/EngineController/EngineController.hpp"
+#include "tasks/taskMovement/taskMovement.h"
 #include "tasks/taskTelemetry/taskTelemetry.h"
 #include "utils/typeConversion.h"
 
@@ -31,14 +32,12 @@
 // Type: Move
 // Move the robot in a given direction
 #define MESSAGE_TYPE_MOVE 'm'
-
 // Spec Move: Go forward
 #define MESSAGE_SPEC_MOVE_FORWARD 'f'
 // Spec Move: Go backward
 #define MESSAGE_SPEC_MOVE_BACKWARD 'b'
 // Spec Move: Stop the movement
 #define MESSAGE_SPEC_MOVE_STOP 's'
-
 // Arg: Time
 // How long the movement will last
 #define MESSAGE_ARG_TIME 't'
@@ -54,7 +53,6 @@
 
 // Type: Telemetry
 #define MESSAGE_TYPE_TELEMETRY 't'
-
 // Spec Telemetry: Distance from the ultrasonic sensor
 #define MESSAGE_SPEC_TELEMETRY_DISTANCE 'd'
 
