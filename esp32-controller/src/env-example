@@ -10,14 +10,16 @@
 #define MOTOR_RIGHT_FORWARD (27)
 #define ULTRASONIC_TRIGGER (25)
 #define ULTRASONIC_ECHO (26)
-#define INFRARED_LEFT (36)
-#define INFRARED_RIGHT (39)
-#define INFO_LED (43)
 
 // -------------------- ENVIRONMENTS
 #define WIFI_SSID ("")
 #define WIFI_PASSWORD ("")
 #define WEBSOCKET_URI ("ws://localhost")
 #define WEBSOCKET_PORT (8080)
+#define WEBSOCKET_PEM                                                   \
+  ("-----BEGIN CERTIFICATE-----\n"                                      \
+   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n" \
+   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n" \
+   "-----END CERTIFICATE-----\n\0")
 
 #endif  // ENV_H
