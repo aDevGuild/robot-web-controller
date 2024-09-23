@@ -1,5 +1,16 @@
 # Contributing
 
+## .env
+
+Run susbstituting 'websocket.org' with the server you want to connect to:
+  
+```bash
+echo "" | openssl s_client -showcerts -connect websocket.org:443 | sed -n "1,/Root/d; /BEGIN/,/END/p" | openssl x509 -outform PEM >websocket_org.pem 
+```
+
+to get the certificate for the websocket.org server and substitute the contents of the `WEBSOCKET_PEM` define in the `.env` file with the contents of the `websocket_org.pem` file.
+
+
 ## Guidelines
 
 ### Don't give an important behavior to the Super Loop / Default Task
@@ -19,7 +30,8 @@ The only behavior that should be given to this task is when nothing more is runn
 ```cpp
 /**
  * @file MyFile.h
- * @brief This file contains the prototypes of the functions that will be used in MyFile.c.
+ * @brief This file contains the prototypes of the functions that will be used
+ * in MyFile.c.
  */
 
 #ifndef MY_FILE_H
